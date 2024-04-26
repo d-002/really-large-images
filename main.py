@@ -25,8 +25,8 @@ with open(file, 'wb') as f:
 
     # Image Data
     idata = b''
-    i = 0
     for y in range(h-1, -1, -1): # reversed y order
+        i = y*w
         if psize == 3: # separate pixel components and add them separately
             for _ in range(w):
                 p = pixels[i]
