@@ -1,56 +1,9 @@
 from io import BytesIO
 from struct import pack
 
+from .buffer import *
+
 # NOT FINAL
-
-# handles pixel data chunks during processing
-class Buffer:
-    def __init__(self):
-        self.size = 1024 # size in bytes of buffers
-        self.i = 0 # index in the buffer
-
-        # create new buffer
-        self.buf = BytesIO()
-        self.buf.write(b'\x00'*self.size)
-        self.buf.seek(0)
-
-    def store(self, data):
-        # returns either None or a full buffer if a swap is needed
-        l = len(data)
-        result = None
-
-        if self.i+l < self.size:
-            self.buf.write(data)
-            self.i += l
-        else:
-            # write what fits
-            l2 = self.i+l-self.size # length of data that does not fit
-            if l-l2:
-                self.buf.write(data[:l-l2])
-                data = data[l-l2:]
-
-            # return the full buffer
-            self.buf.seek(0)
-            result = self.buf.read(self.size)
-            self.buf.seek(0)
-            self.i = l2
-
-            # add the remaining data
-            if data:
-                self.buf.write(data)
-
-        return result
-
-    def query(self):
-        # empties the buffer and returns its content if not empty
-
-        if self.i and False:
-            self.buf.seek(0)
-            s = self.buf.read(self.size)
-
-            self.buf.seek(0)
-            self.i = 0
-            return s
 
 buf = Buffer()
 
